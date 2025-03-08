@@ -65,15 +65,14 @@ vulnerability_description, likelihood, impact) VALUES
 
 def Main():
     """The main function to store and fetch data periodically"""
-    #domain and IP for demostration
 
-    domain = SecurityTrails.DOMAIN
+    domain = SecurityTrails. #store the domain
     # shodan fetching data
     shodan_data = fetch_data()
     if shodan_data:
         #retrieve exposed ports
         ports = shodan_data.get('ports', [])
-        #dictionary to store the data
+        # store the data
         store_threat_intelligence(threat_name="Exposed ports",
                                   vulnerability= f"Exposed ports {', '. join(map(str,ports))}",
         likelihood= 4,
@@ -85,14 +84,16 @@ def Main():
             if 'data' in virus_data:
                 attributes = virus_data['data']['attributes']
                 threat_score = attributes.get("reputation", 'N/A')
+                  #store the information
                 store_threat_intelligence(threat_name="VirusTotal Domain Reputation",
                                           vulnerability=f"Domain reputation score: {threat_score}",
                                           likelihood=3,impact=4)
 
-            #fetch dta with security trails
+            #fetch data with security trails
             security_trails_data=security_data()
             if security_trails_data:
                 for record in security_trails_data.get('records', []):
+                    #store information
                     store_threat_intelligence(threat_name="DNS Records",
                                               vulnerability=f"DNS record{record['record']}",
                                               likelihood=3,
@@ -103,7 +104,7 @@ def Main():
     if __name__ == "__main__":
         while True:
             Main()
-            #scheduling it to runn periodically
+            #scheduling it to run periodically
             sleep(7200) #make it sleep for 2 hours after fetching data
 
 
